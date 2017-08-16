@@ -16,7 +16,7 @@ class ProfileBar extends Component {
           Hola @{this.props.username}!
         </span> 
         <button onClick={this.props.onOpenText} className={styles.button}>
-          <span className='fa fa-lg fa-edit'>Tweet!</span> 
+          <span className='fa fa-lg fa-edit'></span>Tweet!
         </button>
       </div>
     )
