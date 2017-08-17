@@ -1,0 +1,26 @@
+import React, { PropTypes } from 'react'
+import styles from './login.css'
+
+const propTypes = {
+  onAuth: PropTypes.func.isRequired
+}
+
+function Login ( {onAuth} ) {
+  return (
+    <div className={styles.root}> 
+      <p className={styles.text}>
+        Necesitamos que inicies sesiñon con tu cuenta de github para que puedas leer y escribir mensajes
+      </p>
+      <button 
+        onClick={this.props.onAuth}
+        className={styles.button}
+      >
+        <span class='fa fa-github'></span>Login con Github
+      </button>
+    </div>
+  )
+}
+
+Login.propTypes = propTypes
+
+export default Login

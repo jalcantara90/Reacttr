@@ -5,6 +5,8 @@ import 'normalize-css'
 import styles from './app.css'
 import Header from '../Header'
 import Main from '../Main'
+import Profile from '../Profile'
+import Login from '../login'
 
 class App extends Component {
   constructor () {
@@ -15,10 +17,18 @@ class App extends Component {
         photoURL: 'https://scontent.fmad3-4.fna.fbcdn.net/v/t1.0-9/10410123_10205003754204428_638652949851853439_n.jpg?oh=d5d13e99bfe6f73e880834e7210c1561&oe=5A2D3A54',
         email: 'jalcantara1990@gmail.com',
         displayName: 'Jonathan Alcántara',
-        onOpenText: false
+        onOpenText: false,
+        location: 'Barcelona, España'
       }
     }
+
+    this.handleOnAuth = this.handleOnAuth.bind(this)
   }
+
+  handleOnAuth () {
+    console.log('Auth')
+  }
+
   render () {
     return (
       <Router>
@@ -30,14 +40,29 @@ class App extends Component {
                 <Main user={this.state.user}/>
               )
             }else {
-              //render Login
+              return(
+                <Login onAuth={this.handleOnAuth} />
+              )
             }
           }} />
-          <Route path='/profile' render={ () => {
-            // render Profile
-          }}/>
-          <Route path='/user/:username' render={ ({ params }) => {
-            //render <Profile /> pasando params.username
+          <Route path='/profile' render={ () => (
+         
+              <Profile 
+                picture={this.state.user.photoURL}
+                displayName={this.state.user.displayName}
+                emailAddress={this.state.user.email}
+                username={this.state.user.email.split('@')[0]}
+                location={this.state.user.location}
+              />
+            
+          )}/>
+          <Route path='/user/:username' render={({ match }) => {
+            return (
+              <Profile
+                displayName={match.params.username}
+                username={match.params.username}
+              />
+            )
           }} />
         </div>
       </Router>
