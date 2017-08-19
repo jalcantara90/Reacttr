@@ -12,10 +12,10 @@ function Login ( {onAuth} ) {
         Necesitamos que inicies sesiñon con tu cuenta de github para que puedas leer y escribir mensajes
       </p>
       <button 
-        onClick={this.props.onAuth}
+        onClick={onAuth}
         className={styles.button}
       >
-        <span class='fa fa-github'></span>Login con Github
+        <span className='fa fa-github'></span>Login con Github
       </button>
     </div>
   )

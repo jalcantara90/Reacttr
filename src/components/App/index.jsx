@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import firebase from 'firebase'
 import 'normalize-css'
 
 import styles from './app.css'
@@ -13,20 +14,36 @@ class App extends Component {
     super()
 
     this.state = {
-      user: {
-        photoURL: 'https://scontent.fmad3-4.fna.fbcdn.net/v/t1.0-9/10410123_10205003754204428_638652949851853439_n.jpg?oh=d5d13e99bfe6f73e880834e7210c1561&oe=5A2D3A54',
-        email: 'jalcantara1990@gmail.com',
-        displayName: 'Jonathan Alcántara',
-        onOpenText: false,
-        location: 'Barcelona, España'
-      }
+      user: null
     }
 
     this.handleOnAuth = this.handleOnAuth.bind(this)
+    this.handleLogOut = this.handleLogOut.bind(this)
+  }
+
+  componentWillMount () {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this.setState({ user })
+        console.log(user)
+      } else {
+        this.setState({ user: null })
+      }
+    })
   }
 
   handleOnAuth () {
-    console.log('Auth')
+    const provider = new firebase.auth.GithubAuthProvider()
+
+    firebase.auth().signInWithPopup(provider)
+      .then(result => console.log(`${result.user.email} ha iniciado sesión`))
+      .catch(error => console.log( `Error: ${error.code}: ${error.message}`))
+  }
+
+  handleLogOut () {
+    firebase.auth().signOut()
+      .then( () => console.log('Te has desconectado correctamente'))
+      .catch( () => console.error('Un Error ocurrió'))
   }
 
   render () {
@@ -37,7 +54,10 @@ class App extends Component {
           <Route exact path='/' render={ () => {
             if (this.state.user) {
               return(
-                <Main user={this.state.user}/>
+                <Main 
+                  user={this.state.user}
+                  onLogOut={this.handleLogOut}
+                />
               )
             }else {
               return(
